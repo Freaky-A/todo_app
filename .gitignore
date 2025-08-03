@@ -1,0 +1,7 @@
+#テンプレとして対象外にするもの
+node_modules/
+.env
+npm-debug.log
+package-lock.json
+#起動時メモ.txt対象外
+起動時メモ.txt
