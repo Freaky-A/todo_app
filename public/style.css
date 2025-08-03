@@ -1,0 +1,244 @@
+/* 全体レイアウト */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f6f8fa;
+  color: #333;
+  max-width: 750px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* タイトル */
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+}
+
+/* フォーム関連（追加・検索・絞り込み・並び替え） */
+form {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+input[type="text"],
+input[type="date"],
+select {
+  flex: 1;
+  min-width: 160px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+/* エラーメッセージ */
+.error-msg {
+  color: #e74c3c;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* タスクリスト */
+ul.todo-list {
+  list-style: none;
+  padding: 0;
+}
+
+.todo-list li {
+  background-color: #ecf0f1;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.todo-list li.done {
+  background-color: #dfe6e9;
+  color: #888;
+  text-decoration: line-through;
+}
+
+/* タスクの情報と操作 */
+.todo-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* 🌈 カードレイアウト（背景色付き） */
+.task-card {
+  background-color: #f8f1ff; /* 少し淡い紫ベースで差別化 */
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* 🔠 タスク名1行 */
+.card-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2c3e50;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* 📋 その他情報行（横並び） */
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap; /* ← 折り返し防止 */
+  overflow-x: auto;  /* ← 必要に応じてスクロール許可 */
+  gap: 1rem;
+}
+
+/* 📦 各項目（固定幅揃え） */
+.card-field {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 0;      /* ← 幅が狭くならないように固定 */
+  min-width: 160px;    /* ← ズレ防止の横幅指定 */
+}
+
+/* アイコンだけのラベル */
+.card-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* 表示内容 */
+.card-value {
+  color: #34495e;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+/* 予定日が今日のときの強調表示 */
+.card-field.due-today .card-value {
+  background-color: #ffeaa7;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+  color: #d35400;
+}
+
+/* 操作ボタン（チェック・編集・削除） */
+.todo-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.todo-action-form {
+  margin: 0;
+}
+
+.todo-action-form button {
+  width: 2.2rem;
+  height: 2.2rem;
+  font-size: 1.2rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #dfe6e9;
+  border: none;
+  border-radius: 50%;
+  color: #2d3436;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.todo-action-form button:hover {
+  background-color: #b2bec3;
+}
+
+/* ページング */
+.pagination {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.pagination a {
+  margin: 0 0.5rem;
+  color: #2980b9;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.pagination a:hover {
+  text-decoration: underline;
+}
+
+/* 検索条件 */
+.active-filters {
+  background-color: #f0f9ff;
+  border-left: 4px solid #3498db;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.active-filters span {
+  color: #2c3e50;
+}
+
+.clear-button {
+  margin-left: auto;
+  background-color: #e74c3c;
+  color: white;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.clear-button:hover {
+  background-color: #c0392b;
+}
+
+/* スマホ対応 */
+@media (max-width: 600px) {
+  .todo-item {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .todo-actions {
+    justify-content: flex-start;
+  }
+}

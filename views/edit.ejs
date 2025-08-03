@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/style.css" />
+    <title>タスクを編集</title>
+</head>
+<body>
+    <h1>タスクの編集</h1>
+
+    <form action="/update/<%= index %>" method="POST">
+        <input type="text" name="task" value="<%= todo.task %>" required />
+        <input type="text" name="category" value="<%= todo.category %>" />
+        <input type="date" name="dueDate" value="<%= todo.dueDate %>" />
+        <button type="submit">更新</button>
+        <a href="/">キャンセル</a>
+    </form>
+</body>
+</html>

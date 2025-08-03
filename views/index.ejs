@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/style.css">
+    <title>ToDoリスト</title>
+</head>
+<body>
+    <h1>ToDoリスト</h1>
+
+    <% if (errorMessage) { %>
+        <p class="error-msg"><%= errorMessage %></p>
+    <% } %>
+
+    <!-- タスク追加フォーム -->
+    <form action="/add" method="POST">
+        <input type="text" name="task" placeholder="やること" required>
+        <input type="text" name="category" placeholder="カテゴリ（任意）">
+        <input type="date" name="dueDate" />
+        <button type="submit">追加</button>
+    </form>
+
+    <!-- 検索 -->
+    <form action="/search" method="GET">
+        <input type="text" name="q" placeholder="検索...">
+        <button type="submit">検索</button>
+    </form>
+
+    <!-- 絞り込み -->
+    <form action="/filter" method="GET">
+        <select name="category">
+            <option value="">すべてのカテゴリ</option>
+            <% (categories || []).forEach(cat => { %>
+                <option value="<%= cat %>" <%= filters?.category === cat ? 'selected' : '' %>><%= cat %></option>
+            <% }) %>
+        </select>
+        <select name="status">
+            <option value="">すべて</option>
+            <option value="undone" <%= filters?.status === 'undone' ? 'selected' : '' %>>未完了</option>
+            <option value="done" <%= filters?.status === 'done' ? 'selected' : '' %>>完了</option>
+        </select>
+        <button type="submit">絞り込み</button>
+    </form>
+
+    <!-- ソート -->
+    <form action="/sort" method="GET">
+      <select name="key">
+        <option value="">並び替え</option>
+        <option value="category" <%= sortKey==='category' ? 'selected' : '' %>>カテゴリ</option>
+        <option value="dueDate" <%= sortKey==='dueDate' ? 'selected' : '' %>>予定日</option>
+        <option value="completedAt" <%= sortKey==='completedAt' ? 'selected' : '' %>>完了日</option>
+      </select>
+      <button type="submit">並び替え</button>
+    </form>
+
+    <% if (filters && (filters.q || filters.category || filters.status) || sortKey) { %>
+      <div class="active-filters">
+        <span>表示条件:</span>
+        <% if (filters.q) { %><span>検索: "<%= filters.q %>"</span><% } %>
+        <% if (filters.category) { %><span>カテゴリ: <%= filters.category %></span><% } %>
+        <% if (filters.status) { %><span>状態: <%= filters.status === 'done' ? '完了' : '未完了' %></span><% } %>
+        <% if (sortKey) { %><span>並び順: <%= sortKey %></span><% } %>
+        <a href="/" class="clear-button">条件をクリア</a>
+      </div>
+    <% } %>
+
+    <!-- タスクリスト -->
+    <ul class="todo-list">
+      <% const today = new Date().toISOString().split('T')[0]; %>
+      <% todos.forEach((todo, index) => { %>
+        <li class="<%= todo.done ? 'done' : '' %>">
+          <div class="todo-item">
+            <!-- 🧾 カードスタイル情報 -->
+            <div class="task-card">
+              <div class="card-title"><%= todo.task %></div>
+
+              <!-- 横並びメタ情報 -->
+              <div class="card-meta">
+                <div class="card-field">
+                  <span class="card-icon">🏷</span>
+                  <span class="card-value"><%= todo.category || '未分類' %></span>
+                </div>
+                <div class="card-field <%= todo.dueDate === today ? 'due-today' : '' %>">
+                  <span class="card-icon">📅</span>
+                  <span class="card-value"><%= todo.dueDate || '未設定' %></span>
+                </div>
+                <div class="card-field">
+                  <span class="card-icon">🗓</span>
+                  <span class="card-value"><%= todo.completedAt || '未完了' %></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="todo-actions">
+              <!-- 状態切替 -->
+              <form action="/toggle" method="POST" class="todo-action-form">
+                <input type="hidden" name="index" value="<%= index %>" />
+                <button type="submit" title="完了状態切替">
+                  ✅
+                </button>
+              </form>
+
+              <!-- 編集 -->
+              <form action="/edit/<%= index %>" method="GET" class="todo-action-form">
+                <button type="submit" title="編集">
+                  ✏️
+                </button>
+              </form>
+
+              <!-- 削除 -->
+              <form action="/delete" method="POST" class="todo-action-form" onsubmit="return confirm('本当に削除しますか？')">
+                <input type="hidden" name="index" value="<%= index %>" />
+                <button type="submit" title="削除">
+                  🗑
+                </button>
+              </form>
+            </div>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+
+    <!-- ページング -->
+    <div class="pagination">
+      <% if (currentPage > 1) { %>
+        <a href="?<%= buildQuery(filters, sortKey, currentPage - 1) %>">◀ 前へ</a>
+      <% } %>
+      <span>ページ <%= currentPage %> / <%= totalPages %></span>
+      <% if (currentPage < totalPages) { %>
+        <a href="?<%= buildQuery(filters, sortKey, currentPage + 1) %>">次へ ▶</a>
+      <% } %>
+    </div>
+</body>
+</html>
